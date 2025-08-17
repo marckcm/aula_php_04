@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafio: Sistema de Pontuação de Alunos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
     <h1>Sistema de Pontuação de Alunos</h1>
 
     <form action="" method="post">
@@ -37,6 +39,9 @@
             $nome = trim($_POST[$nome_key] ?? '');
             $nota = filter_input(INPUT_POST, $nota_key, FILTER_VALIDATE_FLOAT);
 
+            /*condição se para mandar para os erros caso eles existão nota tem 
+            que ser digitada e não pode ser menor que 0 ou maior que 10 e o 
+            nome no usuário não pode estar vazia*/
             if (empty($nome)) {
                 $erros[] = "O nome do Aluno $i não pode estar vazio.";
             }
@@ -47,7 +52,7 @@
 
             $alunos[] = ['nome' => $nome, 'nota' => $nota];
         }
-
+        // se a array erro não estiver vazia vai percorrer e mostar os erros
         if (!empty($erros)) {
             foreach ($erros as $erro) {
                 echo "<p style=\"color: red;\">$erro</p>";
@@ -55,8 +60,10 @@
             exit; // Interrompe a execução se houver erros
         }
 
+        //variavel para a soma das notas para a maior nota e o nome do 
+        // aluno que tem a maior nota
         $soma_notas = 0;
-        $maior_nota = -1; // Inicializa com um valor que será facilmente superado por qualquer nota válida
+        $maior_nota = 0; 
         $aluno_maior_nota = "";
 
         // Percorrer os alunos para calcular a média e verificar maior nota
@@ -65,9 +72,9 @@
 
             // Condicional para aprovação
             if ($aluno['nota'] >= 7) {
-                echo "<p>{$aluno['nome']} foi <strong>aprovado</strong> com nota {$aluno['nota']}.</p>";
+                echo "<p class=\"aprovado\">{$aluno['nome']} foi <strong>aprovado</strong> com nota {$aluno['nota']}.</p>";
             } else {
-                echo "<p>{$aluno['nome']} foi <strong>reprovado</strong> com nota {$aluno['nota']}.</p>";
+                echo "<p class=\"reprovado\">{$aluno['nome']} foi <strong>reprovado</strong> com nota {$aluno['nota']}.</p>";
             }
 
             // Verificar maior nota
@@ -79,11 +86,12 @@
 
         // Calcular a média
         $media = $soma_notas / count($alunos);
-        echo "<p>A média das notas é: <strong>$media</strong>.</p>";
+        echo "<p class=\"media\">A média das notas é: <strong>$media</strong>.</p>";
 
         // Mostrar o aluno com maior nota
-        echo "<p>O aluno com a maior nota é: <strong>$aluno_maior_nota</strong> com nota $maior_nota.</p>";
+        echo "<p class=\"maior-nota\">O aluno com a maior nota é: <strong>$aluno_maior_nota</strong> com nota $maior_nota.</p>";
     }
     ?>
+    </div>
 </body>
 </html>
